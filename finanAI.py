@@ -63,7 +63,6 @@ def add_new_expense(data):
             print("Invalid input. Please enter the amount as a numeric value.\n")
     return data
 
-# NLP for Saving Suggestions
 def process_savings_query(query):
     savings_keywords = ['save', 'spend less', 'cut down', 'budget', 'saving tips', 'money tips', 'give me tips', 'give me saving tips', 'tell me saving tips', 'how to save']
     tips = [
@@ -75,39 +74,21 @@ def process_savings_query(query):
         "6. Automate your savings to save a percentage of your income without thinking about it."
     ]
     
-    # Match any of the saving-related phrases
     if any(keyword in query.lower() for keyword in savings_keywords):
-        shown_tips = []  # List to keep track of the tips shown
-        
         print("\nHere are some personalized tips to save more money:\n")
-        while True:
-            # Randomly choose a tip that hasn't been shown yet
-            available_tips = [tip for tip in tips if tip not in shown_tips]
-            
-            if not available_tips:  # If all tips have been shown, end the loop
-                print("\nYou have already seen all available saving tips!")
-                break
-            
-            # Select a new tip
-            new_tip = random.choice(available_tips)
-            print(new_tip)
-            shown_tips.append(new_tip)  # Add the shown tip to the list
+        for tip in tips:
+            print(tip)
 
-            user_response = input("\nWould you like another saving tip? (yes/no/skip): ").lower()
-            if user_response in ['yes', 'y']:
-                continue
-            elif user_response in ['no', 'n']:
-                print("Great! Feel free to ask for more tips anytime.")
-                break
-            elif user_response == 'skip':
-                print("No problem! Feel free to ask about anything else.")
-                break
-            else:
-                print("Sorry, I didn't understand that. Please respond with 'yes', 'no', or 'skip'.")
+        user_response = input("\nWould you like to see more tips? (yes/no): ").lower()
+        if user_response == 'yes':
+            print("\nHere are some more saving tips!")
+            for tip in tips:
+                print(tip)
+        else:
+            print("Alright! Let me know if you need more tips in the future!")
     else:
-        print("It seems you're not asking specifically for saving tips. Please rephrase your question and try again.\n")
+        print("It seems you're not asking for saving tips. Please ask something else.\n")
 
-# NLP to understand Expense Queries
 def process_expense_query(query, data):
     category = None
     doc = nlp(query)
@@ -134,9 +115,9 @@ def ai_assistant():
         if query == 'exit':
             print("\nGoodbye! Take care of your finances!")
             break
-        elif 'tips' in query or 'save' in query:
+        elif 'tips' in query or 'save' in query or 'advice' in query or 'suggestion' in query:
             process_savings_query(query)
-        elif 'spend' in query or 'how much' in query or 'amount' in query:
+        elif 'spend' in query or 'how much' in query or 'amount' in query or 'how much did i save' in query:
             process_expense_query(query, data)
         else:
             print("\nI'm not sure how to help with that. Can you ask me about your spending or saving tips?\n")
@@ -184,6 +165,6 @@ def main_interaction():
         else:
             print("\nInvalid choice. Please select a valid option.\n")
 
-# Run the main interaction loop
+# Main interaction loop
 if __name__ == "__main__":
     main_interaction()
